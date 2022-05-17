@@ -2,22 +2,22 @@ import { useState } from 'react';
 
 const useInput = (validateValueFn) => {
 	const [enteredValue, setEnteredValue] = useState('');
-	const [enteredValueTouched, setEnteredValueTouched] = useState(false);
+	const [valueTouched, setValueTouched] = useState(false);
 
 	const valueIsValid = validateValueFn(enteredValue);
-	const hasError = !valueIsValid && enteredValueTouched;
+	const hasError = !valueIsValid && valueTouched;
 
 	const valueChangeHandler = (event) => {
 		setEnteredValue(event.target.value);
 	};
 
-	const valueBlurHandler = () => {
-		setEnteredValueTouched(true);
+	const inputBlurHandler = () => {
+		setValueTouched(true);
 	};
 
 	const reset = () => {
 		setEnteredValue('');
-		setEnteredValueTouched(false);
+		setValueTouched(false);
 	};
 
 	return {
@@ -25,7 +25,7 @@ const useInput = (validateValueFn) => {
 		isValid: valueIsValid,
 		hasError: hasError,
 		valueChangeHandler,
-		valueBlurHandler,
+		inputBlurHandler,
 		reset,
 	};
 };
