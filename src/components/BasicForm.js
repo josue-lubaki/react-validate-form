@@ -1,26 +1,28 @@
 import useMyInput from '../hooks/use-my-input';
 
+const isEmail = (value) => value.trim().toLowerCase().match(EMAIL_REGEX);
+const isNotEmpty = (value) => value.trim() !== '';
 const EMAIL_REGEX =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const BasicForm = () => {
 	const {
-		value: enteredFname,
-		isValid: fNameIsValid,
-		hasError: fNameHasError,
-		valueChangeHandler: fNameChangeHandler,
-		inputBlurHandler: fNameBlurHandler,
-		reset: resetFnameInput,
-	} = useMyInput((value) => value.trim() !== '');
+		value: enteredFirstName,
+		isValid: firstNameIsValid,
+		hasError: firstNameHasError,
+		valueChangeHandler: firstNameChangeHandler,
+		inputBlurHandler: firstNameBlurHandler,
+		reset: resetFirstNameInput,
+	} = useMyInput(isNotEmpty);
 
 	const {
-		value: enteredLname,
-		isValid: lNameIsValid,
-		hasError: lNameHasError,
-		valueChangeHandler: lNameChangeHandler,
-		inputBlurHandler: lNameBlurHandler,
-		reset: resetLnameInput,
-	} = useMyInput((value) => value.trim() !== '');
+		value: enteredLastName,
+		isValid: lastNameIsValid,
+		hasError: lastNameHasError,
+		valueChangeHandler: lastNameChangeHandler,
+		inputBlurHandler: lastNameBlurHandler,
+		reset: resetLastNameInput,
+	} = useMyInput(isNotEmpty);
 
 	const {
 		value: enteredEmail,
@@ -29,15 +31,15 @@ const BasicForm = () => {
 		valueChangeHandler: emailChangeHandler,
 		inputBlurHandler: emailBlurHandler,
 		reset: resetEmailInput,
-	} = useMyInput((value) => value.trim().toLowerCase().match(EMAIL_REGEX));
+	} = useMyInput(isNotEmpty && isEmail);
 
 	let formValid;
 
-	if (fNameIsValid && lNameIsValid && emailIsValid) {
+	if (firstNameIsValid && lastNameIsValid && emailIsValid) {
 		formValid = true;
 	}
 
-	const formSubmissionHandler = (event) => {
+	const submitHandler = (event) => {
 		event.preventDefault();
 
 		if (!formValid) {
@@ -45,19 +47,19 @@ const BasicForm = () => {
 		}
 
 		alert(
-			`First Name : ${enteredFname} \nLast Name : ${enteredLname} \nEmail : ${enteredEmail}`
+			`First Name : ${enteredFirstName} \nLast Name : ${enteredLastName} \nEmail : ${enteredEmail}`
 		);
 
-		resetFnameInput();
-		resetLnameInput();
+		resetFirstNameInput();
+		resetLastNameInput();
 		resetEmailInput();
 	};
 
-	const fNameInputClasses = fNameHasError
+	const firstNameInputClasses = firstNameHasError
 		? 'form-control invalid'
 		: 'form-control';
 
-	const lNameInputClasses = lNameHasError
+	const lastNameInputClasses = lastNameHasError
 		? 'form-control invalid'
 		: 'form-control';
 
@@ -66,31 +68,31 @@ const BasicForm = () => {
 		: 'form-control';
 
 	return (
-		<form onSubmit={formSubmissionHandler}>
+		<form onSubmit={submitHandler}>
 			<div className='control-group'>
-				<div className={fNameInputClasses}>
+				<div className={firstNameInputClasses}>
 					<label htmlFor='fname'>First Name</label>
 					<input
 						type='text'
 						id='fname'
-						onChange={fNameChangeHandler}
-						onBlur={fNameBlurHandler}
-						value={enteredFname}
+						onChange={firstNameChangeHandler}
+						onBlur={firstNameBlurHandler}
+						value={enteredFirstName}
 					/>
-					{fNameHasError && (
+					{firstNameHasError && (
 						<p className='error-text'>Please enter a valid First Name</p>
 					)}
 				</div>
-				<div className={lNameInputClasses}>
+				<div className={lastNameInputClasses}>
 					<label htmlFor='lname'>Last Name</label>
 					<input
 						type='text'
 						id='lname'
-						onChange={lNameChangeHandler}
-						onBlur={lNameBlurHandler}
-						value={enteredLname}
+						onChange={lastNameChangeHandler}
+						onBlur={lastNameBlurHandler}
+						value={enteredLastName}
 					/>
-					{lNameHasError && (
+					{lastNameHasError && (
 						<p className='error-text'>Please enter a valid Last Name</p>
 					)}
 				</div>
